@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>A1Q5</title>
+		<script type="text/javascript" src="d3.js"></script>
+		<style type="text/css">
+			/* No style rules here yet */
+		</style>
+	</head>
+	<body>
+	<script>
+
+		/*BEGIN: READ ONLY*/
+
+		var w = 600;
+		var h = 600;
+
+		var dictionary = {};
+
+		var dataset;
+
+		//Load in the data
+		d3.csv("ChinaExportData2015.csv", function(data) {
+				dataset = data;
+				generateVisualization();
+			});
+
+		/*END: READ ONLY*/
+
+
+		/*BEGIN: YOUR CODE*/
+		function generateVisualization(){
+
+			var maxvalue = 0;
+
+			dataset.forEach(function(d){
+				if(isNaN(parseFloat(d.Value))) return;
+				//fill the dictionary here
+				if(d.Importer in dictionary)
+					dictionary[d.Importer] = parseFloat(dictionary[d.Importer]) + parseFloat(d.Value);
+				else dictionary[d.Importer] = parseFloat(d.Value);
+			});
+
+			// check if keys were properly in place in dictionary
+			console.log(Object.keys(dictionary));
+
+			//Create SVG element
+			var svg=d3.select("body").append("svg")
+								.attr("width",w).attr("height",h);
+			//Draw circles
+
+			//get maxvalue
+			console.log(Object.values(dictionary));
+			var newArr = Object.values(dictionary);
+			for(var i = 0; i<newArr.length; i++){
+				if(newArr[i] > maxvalue){
+					maxvalue = newArr[i];
+				}
+			}
+			// Check to see if value of d3.max is same as that of for-loop
+			// maxvalue=d3.max(Object.values(dictionary));
+			console.log(maxvalue);
+			console.log(Object.keys(dictionary));
+
+			svg.selectAll("circle")
+				.data(Object.keys(dictionary))
+				.enter()
+				.append("circle")
+				.attr("cx",function(d, i){ return 30+Math.floor(i/15)*30; })
+				.attr("cy",function(d, i){ return 30+(i%15)*30; })
+				.attr("r", function(d, i){ return Math.floor((10 * dictionary[d])/maxvalue) })
+				.attr("fill","lightblue")
+				.attr("stroke-width", "1")
+				.attr("stroke", "red") ;
+
+			//Draw labels
+			svg.selectAll("text")
+				.data(Object.keys(dictionary))
+				.enter()
+				.append("text")
+				.text(function(d,i) {
+						if( Math.floor((10 * dictionary[d])/maxvalue) > 0 )
+							return ( (Object.keys(dictionary))[i] ).substring(0,5) })
+				.attr("x",function(d,i){ return 30+Math.floor(i/15)*30;})
+				.attr("y",function(d,i){ return 30+(i%15)*30;} )
+				.attr("font-family","sans-serif")
+				.attr("font-size","10px");
+
+		}
+
+
+		/*END: YOUR CODE*/
+
+ 		/////////////////////////
+		//HOW TO SUBMIT
+		//RENAME the file as A1Q5_YourNSID.html
+		//UPLOAD in Moodle
+		/////////////////////////
+
+	</script>
+	</body>
+</html>

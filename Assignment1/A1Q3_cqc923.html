@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>A1Q3</title>
+		<script type="text/javascript" src="d3.js"></script>
+		<style type="text/css">
+			/* No style rules here yet */
+		</style>
+	</head>
+	<body>
+	<script>
+
+		/*BEGIN: READ ONLY*/
+
+		var w = 600;
+		var h = 300;
+
+		/*score ranges between 0 to 50*/
+		var team = ["A","B","C","D","E","F","G","H","I","J","K"];
+		var score = [20,25,20,30,10,40,40,40,30,25,45];
+
+		/*END: READ ONLY*/
+
+
+		d3.select("body").append("p").text("Hello D3!");
+
+		//var data = _.merge(team, score);
+		//console.log(data);
+		data = [team, score];
+		console.log(data);
+		generateVisualization();
+
+
+
+		/*BEGIN: YOUR CODE*/
+
+		function generateVisualization(){
+			// Create SVG element
+			var svg = d3.select("body").append("svg").attr("width", w).attr("height", h);
+
+			//create a set of dataset squares
+			var squares = svg.selectAll("rect").data(score).enter().append("rect");
+
+			//set the rectangle and dimensions
+			squares.attr("x", function(d,i){ return (i+1) * 50; })
+							.attr("y", 25)
+							.attr("width", function(d){ return d})
+							.attr("height",function(d){ return d})
+							 .attr("fill", "blue");
+
+
+		}
+		/*END: YOUR CODE*/
+
+		/////////////////////////
+		//HOW TO SUBMIT
+		//RENAME the file as A1Q3_YourNSID.html
+		//UPLOAD in Moodle
+		/////////////////////////
+
+
+
+	</script>
+	</body>
+</html>

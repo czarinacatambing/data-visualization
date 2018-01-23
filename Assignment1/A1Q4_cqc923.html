@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>A1Q4</title>
+		<script type="text/javascript" src="d3.js"></script>
+		<style type="text/css">
+			/* No style rules here yet */
+		</style>
+	</head>
+	<body>
+	<script>
+
+		/*BEGIN: READ ONLY*/
+
+		var w = 600;
+		var h = 300;
+
+		/*score ranges between 0 to 50*/
+		var team = ["A","B","C","D","E","F","G","H","I","J","K"];
+		var score = [20,25,20,30,10,40,40,40,30,25,45];
+
+		/*a function for computing average*/
+		computeAverage = function(A){
+			var average = 0;
+			for(var i = 0; i<A.length; i++){
+				average += A[i];
+			}
+			average = average/A.length;
+			return average;
+		}
+
+
+
+		/*END: READ ONLY*/
+
+
+
+		/*BEGIN: YOUR CODE*/
+
+		//Compute average
+		var avg = computeAverage(score);
+
+		d3.select("body").append("p").text("Hello D3!");
+		generateVisualization();
+
+		function generateVisualization(){
+			// Create SVG element
+			var svg = d3.select("body").append("svg").attr("width", w).attr("height", h);
+
+			var list = [];
+			list = score;
+			for (i = score.length; i > 0; i--) {
+    		list.push(avg);
+			}
+
+			for(var i = 0; i<list.length;i++){
+				if(list[i] > list[ i - (list.length/2) ]){
+					var temp = list[i];
+					list[i] = 	list[i - (list.length/2)];
+					list[i - (list.length/2)] = temp;
+				}
+			}
+
+			//create a set of dataset squares
+			var squares = svg.selectAll("rect").data(list).enter().append("rect");
+
+			//set the rectangle and dimensions
+			squares.attr("x", function(d,i){
+								if(i<(list.length/2)) {
+									return ((i) * 50) ; }
+								else {
+									return (i-(list.length/2)) * 50 ; }})
+							.attr("y", 25)
+							.attr("width", function(d){ return d})
+							.attr("height",function(d){ return d})
+							 .attr("fill",function(d,i){
+								 if(d == avg) {
+									 return "black" ; }
+								 else {
+									 return "blue"; }
+							 });
+
+
+
+		}
+
+
+
+
+		/*END YOUR CODE*/
+
+		/////////////////////////
+		//HOW TO SUBMIT
+		//RENAME the file as A1Q4_YourNSID.html
+		//UPLOAD in Moodle
+		/////////////////////////
+
+
+	</script>
+	</body>
+</html>
